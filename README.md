@@ -33,7 +33,9 @@ birgt kein Risiko für dein Konto und berührt Kleinanzeigen nie.
 
 ## So geht's (einfach)
 
-Einmal einrichten, etwa 10 Minuten:
+### Teil 1: Einmal einrichten
+
+*Nur beim ersten Mal, etwa 10 Minuten.*
 
 1. **Python installieren.** Lade es von [python.org/downloads](https://www.python.org/downloads/)
    herunter. Unter Windows beim Installieren das Häkchen **"Add python.exe to PATH"** setzen.
@@ -44,19 +46,21 @@ Einmal einrichten, etwa 10 Minuten:
    pip install git+https://github.com/capraCoder/kleinanzeigen-antworten
    ```
 
-Jedes Mal, wenn du deine Nachrichten sehen willst:
+### Teil 2: Neue Nachrichten holen
 
-3. **Mails in einen Ordner legen.** Lege auf dem Schreibtisch einen Ordner `Kleinanzeigen` an.
+*Jedes Mal, wenn neue Kleinanzeigen-Mails da sind.*
+
+1. **Mails in einen Ordner legen.** Lege auf dem Schreibtisch einen Ordner `Kleinanzeigen` an.
    - *Thunderbird oder Outlook:* Kleinanzeigen-Mails markieren und mit der Maus in den Ordner ziehen.
    - *Gmail im Browser:* Mail öffnen, oben rechts auf ⋮ und **"Nachricht herunterladen"**, dann in den Ordner legen.
-4. **Seite bauen.** In der Eingabeaufforderung:
+2. **Seite bauen.** In der Eingabeaufforderung:
 
    ```
    cd Desktop
    ka-antworten Kleinanzeigen
    ```
 
-5. **Seite öffnen.** Auf dem Schreibtisch liegt jetzt `antworten.html`. Doppelklick, fertig.
+3. **Seite öffnen.** Auf dem Schreibtisch liegt jetzt `antworten.html`. Doppelklick, fertig.
 
 Nur mal schauen, wie es aussieht? Das Bild oben zeigt es mit erfundenen Käufern.
 
