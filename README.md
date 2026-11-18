@@ -36,32 +36,25 @@ birgt kein Risiko für Dein Konto und berührt Kleinanzeigen nie.
 
 ### Teil 1: Einmal einrichten
 
-*Nur beim ersten Mal, etwa 10 Minuten.*
+*Nur beim ersten Mal, etwa 2 Minuten. Windows.*
 
-1. **Python installieren.** Lade es von [python.org/downloads](https://www.python.org/downloads/)
-   herunter. Unter Windows beim Installieren das Häkchen **"Add python.exe to PATH"** setzen.
-2. **Programm installieren.** Öffne die Eingabeaufforderung (Windows-Taste, "cmd" tippen, Enter)
-   oder unter macOS das "Terminal". Kopiere diese Zeile hinein und drücke Enter:
+1. **Programm herunterladen.** Unter [Releases](https://github.com/capraCoder/kleinanzeigen-antworten/releases/latest)
+   die Datei **`ka-antworten.exe`** herunterladen und auf den Schreibtisch legen.
+2. **Einmal doppelklicken.** Das Programm legt auf dem Schreibtisch den Ordner `Kleinanzeigen` an.
+   Warnt Windows ("Der Computer wurde durch Windows geschützt"), klicke auf **"Weitere Informationen"**
+   und dann **"Trotzdem ausführen"**. Das Programm ist neu und noch nicht signiert.
 
-   ```
-   pip install git+https://github.com/capraCoder/kleinanzeigen-antworten
-   ```
+*macOS oder Linux:* Python 3.11+ installieren, dann `pip install ka-antworten`.
 
 ### Teil 2: Neue Nachrichten holen
 
 *Jedes Mal, wenn neue Kleinanzeigen-Mails da sind.*
 
-1. **Mails in einen Ordner legen.** Lege auf dem Schreibtisch einen Ordner `Kleinanzeigen` an.
+1. **Mails in den Ordner `Kleinanzeigen` legen.**
    - *Thunderbird oder Outlook:* Kleinanzeigen-Mails markieren und mit der Maus in den Ordner ziehen.
    - *Gmail im Browser:* Mail öffnen, oben rechts auf ⋮ und **"Nachricht herunterladen"**, dann in den Ordner legen.
-2. **Seite bauen.** In der Eingabeaufforderung:
-
-   ```
-   cd Desktop
-   ka-antworten Kleinanzeigen
-   ```
-
-3. **Seite öffnen.** Auf dem Schreibtisch liegt jetzt `antworten.html`. Doppelklick, fertig.
+2. **`ka-antworten.exe` doppelklicken.** Die Seite öffnet sich im Browser, fertig.
+   (Mit pip: im Ordner über `Kleinanzeigen` einfach `ka-antworten` eintippen.)
 
 Nur mal schauen, wie es aussieht? Das Bild oben zeigt es mit erfundenen Käufern.
 
@@ -124,7 +117,9 @@ What makes ours different is that it only *reads* the notification emails (you d
 folder, or it fetches them read-only from your mailbox over IMAP), so it needs no Kleinanzeigen
 login, takes no account risk and never touches Kleinanzeigen.
 
-- Install: `pip install git+https://github.com/capraCoder/kleinanzeigen-antworten` (Python 3.11 or later).
+- Windows: download `ka-antworten.exe` from [Releases](https://github.com/capraCoder/kleinanzeigen-antworten/releases/latest),
+  double-click it, put the mails in the `Kleinanzeigen` folder it creates on your desktop, double-click again.
+- Install: `pip install ka-antworten` (Python 3.11 or later); run `ka-antworten` with no arguments for the same easy mode.
 - From saved mail: `ka-antworten <.eml/.mbox files or folders> --out antworten.html`
 - From your mailbox, read-only: `ka-antworten --imap --config config.toml`. The password comes from
   `KA_IMAP_PASSWORD` or a prompt, never from the file.

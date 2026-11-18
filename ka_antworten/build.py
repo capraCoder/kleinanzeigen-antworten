@@ -78,6 +78,29 @@ def _js(obj) -> str:
     return json.dumps(obj, ensure_ascii=False).replace("</", "<\\/").replace("<!--", "<\\!--")
 
 
+_SAFE_URL = re.compile(r"^(https?://|(?![a-zA-Z][a-zA-Z0-9+.-]*:)[^\s]+$)")
+
+
+def ad_details(config: dict) -> dict[str, dict]:
+    """[ad_details."<nr>"] from the config: price, text, url, photos. Only http(s) or relative links pass."""
+    out: dict[str, dict] = {}
+    for nr, d in (config.get("ad_details") or {}).items():
+        if not isinstance(d, dict):
+            continue
+        e: dict = {}
+        if isinstance(d.get("price"), (int, float, str)) and not isinstance(d.get("price"), bool):
+            e["price"] = d["price"]
+        if isinstance(d.get("text"), str):
+            e["text"] = d["text"]
+        if isinstance(d.get("url"), str) and d["url"].startswith(("https://", "http://")):
+            e["url"] = d["url"]
+        photos = [p for p in (d.get("photos") or []) if isinstance(p, str) and _SAFE_URL.match(p)]
+        if photos:
+            e["photos"] = photos
+        out[str(nr)] = e
+    return out
+
+
 def render(rows: list[dict], config: dict) -> str:
     tz = config.get("timezone", "Europe/Berlin")
     msgs = to_messages(rows, tz, bool(config.get("full_names", False)))
@@ -92,6 +115,7 @@ def render(rows: list[dict], config: dict) -> str:
         "__TITLE__": html.escape(config.get("title", "Kleinanzeigen-Antworten")),
         "__DATA__": _js(msgs),
         "__ADS__": _js(ads),
+        "__ADDETAILS__": _js(ad_details(config)),
         "__REPLIES__": _js(replies),
         "__AUTO__": _js(hints(msgs)),
         "__DEADLINE__": _js(deadline),
@@ -100,6 +124,5 @@ def render(rows: list[dict], config: dict) -> str:
         "__NCONV__": str(len({m["conv"] for m in msgs})),
         "__NBUY__": str(len({m["wk"] for m in msgs})),
     }
-    for k, v in subs.items():
-        page = page.replace(k, v)
-    return page
+    # one pass: a buyer who types "__ADS__" into a message must not get it substituted
+    return re.sub("|".join(map(re.escape, subs)), lambda mo: subs[mo.group(0)], page)

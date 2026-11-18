@@ -1,0 +1,30 @@
+name: release
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: write
+jobs:
+  exe:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install . pyinstaller tzdata
+      - run: python -m unittest
+      - run: pyinstaller --onefile --name ka-antworten --collect-data ka_antworten --collect-data tzdata packaging/launcher.py
+      - run: dist\ka-antworten.exe --version
+      - uses: softprops/action-gh-release@v2
+        with: {files: dist/ka-antworten.exe}
+  pypi:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install build && python -m build
+      - uses: pypa/gh-action-pypi-publish@release/v1

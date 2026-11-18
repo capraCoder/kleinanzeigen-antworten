@@ -57,6 +57,28 @@ textarea{width:100%;min-height:58px;padding:6px 8px;margin-top:4px}
 .dl{font-size:13px;margin-top:2px;color:var(--warn);font-weight:600}
 #toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;max-width:min(92vw,560px);box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s;z-index:9}
 #toast.on{opacity:1}
+.bar.sort{justify-content:center}
+.adlink{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;border-radius:4px}
+.adlink:hover,.adlink:focus-visible{color:var(--acc);text-decoration-style:solid;outline:none}
+.adlink:focus-visible{box-shadow:0 0 0 2px var(--acc)}
+.adlink .lk{font-size:.85em;display:inline-block;text-decoration:none;margin-left:2px}
+dialog#ap{width:min(760px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);box-shadow:0 12px 40px rgba(0,0,0,.35)}
+dialog#ap::backdrop{background:rgba(0,0,0,.5)}
+.apw{padding:0 14px 14px}
+.aph{display:flex;gap:10px;align-items:flex-start;position:sticky;top:0;background:var(--card);padding:12px 0 6px;z-index:1}
+.aph h2{font-size:17px;margin:0;flex:1;overflow-wrap:anywhere}
+.aph .x{font-size:24px;padding:0 4px}
+.apm{font-size:14px;margin:0 0 8px;color:var(--mute)}.apm b{color:var(--warn)}
+.api{display:block;width:100%;max-height:55vh;object-fit:contain;background:var(--bg);border-radius:8px}
+.apt{display:flex;gap:6px;overflow-x:auto;padding:6px 0}
+.apt button{border:2px solid transparent;padding:0;border-radius:6px;background:none;cursor:pointer;flex:0 0 auto}
+.apt button.on{border-color:var(--acc)}
+.apt img{display:block;width:64px;height:48px;object-fit:cover;border-radius:4px}
+#ap h3{font-size:14px;margin:12px 0 4px}
+.apl{margin:0;padding-left:18px;font-size:14px}.apl li{margin:4px 0;overflow-wrap:anywhere}
+.apd summary{cursor:pointer;font-size:14px;margin-top:10px}
+.apd pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:13px;background:var(--bg);padding:8px;border-radius:6px;max-height:40vh;overflow:auto}
+details.cv.flash{outline:3px solid var(--acc);outline-offset:2px}
 @media (max-width:560px){.btn.send{margin-left:0;width:100%}}
 </style></head><body>
 <header>
@@ -64,26 +86,27 @@ textarea{width:100%;min-height:58px;padding:6px 8px;margin-top:4px}
 <div class="sub">Stand __STAMP__ · __NMSG__ Nachrichten · __NCONV__ Gespräche · __NBUY__ Käufer · <span id="nopen"></span></div>
 <div class="dl" id="dl"></div>
 <div class="bar">
+<input type="search" id="q" placeholder="Suchen: Name, Nr., Text, Hinweis …">
+<label class="f"><input type="checkbox" id="only"> nur offene</label>
+<label class="f" title="Lädt alle 5 Minuten neu, nie während Du tippst"><input type="checkbox" id="auto"> Auto-Neuladen</label>
+<button class="btn" id="seen" title="NEU-Markierungen zurücksetzen">✓ alles gesehen</button>
+<a class="btn" href="https://www.kleinanzeigen.de/m-nachrichten.html" target="ka" rel="noopener">Postfach ↗</a>
+</div>
+<div class="bar sort">
 <button class="tab" data-v="ad" aria-pressed="true">Nach Anzeige</button>
 <button class="tab" data-v="buyer" aria-pressed="false">Nach Käufer</button>
 <button class="btn" data-all="open" title="Alle Gruppen und Gespräche aufklappen">▾ Alle aufklappen</button>
 <button class="btn" data-all="close" title="Alle Gruppen zuklappen">▸ Alle zuklappen</button>
 <button class="btn" data-all="triage" title="Gruppen auf, Gespräche zu: nur die Hinweise">Nur Übersicht</button>
 </div>
-<div class="bar">
-<input type="search" id="q" placeholder="Suchen: Name, Nr., Text, Hinweis …">
-<label class="f"><input type="checkbox" id="only"> nur offene</label>
-<label class="f" title="Lädt alle 5 Minuten neu, nie während du tippst"><input type="checkbox" id="auto"> Auto-Neuladen</label>
-<button class="btn" id="seen" title="NEU-Markierungen zurücksetzen">✓ alles gesehen</button>
-<a class="btn" href="https://www.kleinanzeigen.de/m-nachrichten.html" target="ka" rel="noopener">Postfach ↗</a>
-</div>
 </header>
 <main id="m"></main>
 <div id="toast" role="status" aria-live="polite"></div>
+<dialog id="ap" aria-labelledby="apt"><div class="apw"><div class="aph"><h2 id="apt"></h2><button class="x" id="apx" aria-label="Vorschau schließen" title="Schließen (Esc)">×</button></div><div id="apb"></div></div></dialog>
 <script id="data" type="application/json">__DATA__</script>
 <script>
 const MSGS=JSON.parse(document.getElementById('data').textContent);
-const ADS=__ADS__, REPLIES=__REPLIES__, AUTO=__AUTO__, DEADLINE=__DEADLINE__;
+const ADS=__ADS__, DETAILS=__ADDETAILS__, REPLIES=__REPLIES__, AUTO=__AUTO__, DEADLINE=__DEADLINE__;
 const STATES=["neu","beantwortet","Termin","reserviert","abgeholt","abgesagt","erledigt"];
 const INBOX='https://www.kleinanzeigen.de/m-nachrichten.html';
 function ld(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
@@ -113,7 +136,7 @@ function convHTML(c,showAd){
   const tl=timeline(c).map(m=>`<div class="msg${m.me?' me':''}"><span class="ts">${m.me?'Ich (protokolliert)':esc(c.who)} · ${fmt(m.t)}${(!m.me&&m.t>SEEN)?' <span class="new">NEU</span>':''}${m.me?`<button class="x" data-del="${m.i}" title="Protokoll-Eintrag löschen" aria-label="Eintrag löschen">×</button>`:''}</span>${esc(m.text||'')}</div>`).join('');
   const quick=REPLIES.map((r,i)=>`<button class="btn" data-q="${i}">${esc(r[0])}</button>`).join('');
   const openAttr=(O['c:'+c.key]??isOpen(c))?' open':'';
-  const label=showAd?`<span class="adl">${esc(adLabel(c.nr,c.ad))}</span>`:`<span class="who">${esc(c.who)}</span>`;
+  const label=showAd?`<span class="adl adlink" data-ad="${esc(c.nr)}" role="button" tabindex="0" title="Anzeige ansehen">${esc(adLabel(c.nr,c.ad))} <span class="lk">🔍</span></span>`:`<span class="who">${esc(c.who)}</span>`;
   const search=(c.who+' '+c.nr+' '+adLabel(c.nr,c.ad)+' '+c.msgs.map(m=>m.text).join(' ')+' '+s.note+' '+(AUTO[c.key]||[]).join(' ')).toLowerCase();
   return `<details class="cv st-${s.status}" data-c="${esc(c.key)}" data-r="${openAttr?1:0}" data-s="${esc(search)}"${openAttr}>
   <summary><div class="ch">${label}${isOpen(c)?'<span class="open">● offen</span>':''}${nn?`<span class="new">${nn} NEU</span>`:''}<span class="stag">${esc(s.status)}</span><span class="cnt">${c.msgs.length} Nachr. · zuletzt ${fmt(lastBuyer(c))}</span></div>${triBox(c)}</summary>
@@ -122,7 +145,7 @@ function convHTML(c,showAd){
   ${tl}
   <div class="draft"><label>Entwurf (bleibt gespeichert)</label>
   <textarea class="ta-draft" placeholder="Antwort hier schreiben oder Vorschlag/Baustein wählen …">${esc(D[c.key]||'')}</textarea>
-  <div class="act">${quick}<button class="btn send" data-a="send" title="Kopiert den Entwurf, öffnet das Gespräch bei Kleinanzeigen und protokolliert ihn. Den Senden-Knopf drückst du dort selbst.">Antwort senden</button></div></div>
+  <div class="act">${quick}<button class="btn send" data-a="send" title="Kopiert den Entwurf, öffnet das Gespräch bei Kleinanzeigen und protokolliert ihn. Den Senden-Knopf drückst Du dort selbst.">Antwort senden</button></div></div>
   <div class="act"><button class="btn" data-a="note">Notiz</button></div>
   <textarea class="ta-note" placeholder="Notiz">${esc(s.note)}</textarea>
   </div></details>`}
@@ -141,7 +164,7 @@ function render(){
     const title=view==='ad'?adLabel(g,cs[0].ad):cs[0].who;
     const meta=view==='ad'?`${cs.length} Käufer · ${nMsg} Nachr.`:`${cs.length} Anzeige${cs.length>1?'n':''} · ${nMsg} Nachr.`;
     const gk=view+':'+g,op=(O['g:'+gk]??true);
-    out+=`<details class="grp" data-g="${esc(gk)}" data-r="${op?1:0}"${op?' open':''}><summary><span class="gt">${esc(title)}</span><span class="cnt">${meta}</span>${nOpen?`<span class="open">${nOpen} offen</span>`:''}${nN?`<span class="new">${nN} NEU</span>`:''}</summary>${cs.map(c=>convHTML(c,view==='buyer')).join('')}</details>`}
+    out+=`<details class="grp" data-g="${esc(gk)}" data-r="${op?1:0}"${op?' open':''}><summary>${view==='ad'?`<span class="gt adlink" data-ad="${esc(g)}" role="button" tabindex="0" title="Anzeige ansehen">${esc(title)} <span class="lk">🔍</span></span>`:`<span class="gt">${esc(title)}</span>`}<span class="cnt">${meta}</span>${nOpen?`<span class="open">${nOpen} offen</span>`:''}${nN?`<span class="new">${nN} NEU</span>`:''}</summary>${cs.map(c=>convHTML(c,view==='buyer')).join('')}</details>`}
   document.getElementById('m').innerHTML=out||'<p>Keine Treffer.</p>';
   if(q)filter(q)}
 function filter(q){document.querySelectorAll('details.cv').forEach(e=>e.classList.toggle('hide',!e.dataset.s.includes(q)));
@@ -157,6 +180,27 @@ document.getElementById('q').oninput=render;
 document.getElementById('only').onchange=render;
 document.getElementById('seen').onclick=()=>{SEEN=Date.now();sv(KS,SEEN);render();toast('NEU-Markierungen zurückgesetzt.')};
 const m=document.getElementById('m');
+// Ad preview: a click on an ad title opens the dialog and must not toggle the <details> around it.
+m.addEventListener('click',e=>{const t=e.target.closest('[data-ad]');if(!t)return;e.preventDefault();e.stopPropagation();openAd(t.dataset.ad)},true);
+m.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const t=e.target.closest&&e.target.closest('[data-ad]');if(!t)return;e.preventDefault();e.stopPropagation();openAd(t.dataset.ad)},true);
+const ap=document.getElementById('ap');let APH=[];
+const eur=n=>(+n).toLocaleString('de-DE',{maximumFractionDigits:2})+' €';
+function openAd(nr){const a=DETAILS[nr]||{},cs=Object.values(convs).filter(c=>c.nr===nr).sort((x,y)=>lastBuyer(y)-lastBuyer(x));
+  document.getElementById('apt').textContent=adLabel(nr,cs[0]?cs[0].ad:'');APH=a.photos||[];
+  const cl=cs.map(c=>`<li><button class="btn" data-go="${esc(c.key)}" title="Zum Gespräch springen">${esc(c.who)} →</button> <span class="stag">${esc(st(c.key).status)}</span>${isOpen(c)?' <span class="open">● offen</span>':''} <span class="cnt">${c.msgs.length} Nachr. · zuletzt ${fmt(lastBuyer(c))}</span></li>`).join('');
+  const last=cs.length?cs[0].msgs[cs[0].msgs.length-1]:null;
+  const ph=APH.length?`<img class="api" id="api" src="${esc(APH[0])}" alt="Foto 1 von ${APH.length}">${APH.length>1?`<div class="apt">${APH.map((p,i)=>`<button data-ph="${i}" class="${i?'':'on'}" aria-label="Foto ${i+1} zeigen"><img src="${esc(p)}" alt="" loading="lazy"></button>`).join('')}</div>`:''}`:'';
+  const meta=[`Anzeige ${esc(nr)}`];if(a.price!=null)meta.push(`<b>${esc(typeof a.price==='number'?eur(a.price):a.price)}</b>`);
+  if(a.url)meta.push(`<a href="${esc(a.url)}" target="ka" rel="noopener">bei Kleinanzeigen ↗</a>`);
+  document.getElementById('apb').innerHTML=`<div class="apm">${meta.join(' · ')}</div>${ph}<h3>Gespräche zu dieser Anzeige (${cs.length})</h3><ul class="apl">${cl||'<li class="cnt">keine</li>'}</ul>${last?`<h3>Letzte Nachricht</h3><div class="msg"><span class="ts">${esc(cs[0].who)} · ${fmt(last.t)}</span>${esc(last.text||'')}</div>`:''}${a.text?`<details class="apd"><summary>Anzeigentext</summary><pre>${esc(a.text)}</pre></details>`:''}`;
+  if(!ap.open)ap.showModal();document.getElementById('apx').focus()}
+function goConv(key){const sel=`details.cv[data-c="${CSS.escape(key)}"]`;let cv=document.querySelector(sel);
+  if(!cv||cv.classList.contains('hide')){document.getElementById('q').value='';document.getElementById('only').checked=false;render();filter('');cv=document.querySelector(sel)}
+  if(!cv)return;const gr=cv.closest('details.grp');if(gr)gr.open=true;cv.open=true;cv.scrollIntoView({block:'start',behavior:'smooth'});
+  cv.classList.add('flash');setTimeout(()=>cv.classList.remove('flash'),2500)}
+ap.addEventListener('click',e=>{if(e.target===ap||e.target.closest('#apx')){ap.close();return}
+  const t=e.target.closest('[data-ph]');if(t){const i=+t.dataset.ph,im=document.getElementById('api');im.src=APH[i];im.alt=`Foto ${i+1} von ${APH.length}`;ap.querySelectorAll('[data-ph]').forEach(b=>b.classList.toggle('on',b===t));return}
+  const g=e.target.closest('[data-go]');if(g){ap.close();goConv(g.dataset.go)}});
 m.addEventListener('toggle',e=>{const d=e.target;let k;if(d.classList.contains('grp'))k='g:'+d.dataset.g;else if(d.classList.contains('cv'))k='c:'+d.dataset.c;else return;
   if(O[k]===undefined&&d.open===(d.dataset.r==='1'))return;O[k]=d.open;saveO()},true);
 m.addEventListener('change',e=>{const cv=e.target.closest('details.cv');if(!cv)return;if(e.target.classList.contains('st')){st(cv.dataset.c).status=e.target.value;save();render()}});

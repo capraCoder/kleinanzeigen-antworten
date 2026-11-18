@@ -9,6 +9,13 @@ full_names = false          # false: show "Anna B." instead of the full name
 "1234567890" = "Sofa, grau, 3-Sitzer"
 "1234567891" = "Kinderfahrrad 20 Zoll"
 
+# Optional: more for the ad preview (click an ad title). Photos: files next to the page or https:// links.
+# [ad_details."1234567890"]
+# price = 40
+# text = "Gut erhalten, nur Abholung."
+# url = "https://www.kleinanzeigen.de/..."
+# photos = ["fotos/sofa1.jpg", "fotos/sofa2.jpg"]
+
 # Reply templates: one button each under the draft box.
 [[replies]]
 label = "Noch da?"

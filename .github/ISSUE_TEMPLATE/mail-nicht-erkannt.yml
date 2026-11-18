@@ -1,0 +1,38 @@
+name: Mail nicht erkannt / Mail not recognised
+description: Eine Kleinanzeigen-Mail wird übersprungen oder falsch gelesen.
+labels: ["parser"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Bitte keine echten Käuferdaten posten!** Ersetze Namen, Texte, Telefonnummern,
+        E-Mail-Adressen und Anzeigennummern durch erfundene Werte.
+        **Never post real buyer data.** Replace names, texts and numbers with invented ones.
+  - type: input
+    id: version
+    attributes: {label: "Version (ka-antworten --version)"}
+    validations: {required: true}
+  - type: dropdown
+    id: source
+    attributes:
+      label: Woher kommt die Mail? / Source
+      options: [".eml (Thunderbird/Outlook)", ".eml (Gmail-Download)", ".mbox / Takeout", "IMAP"]
+  - type: textarea
+    id: what
+    attributes:
+      label: "Was passiert? / What happens?"
+      placeholder: "z. B. 0 Nachrichten gefunden, 3 übersprungen"
+    validations: {required: true}
+  - type: textarea
+    id: structure
+    attributes:
+      label: Anonymisierte Mail-Struktur / Anonymised mail structure
+      description: Betreff-Muster, From-Domain, und der HTML-Ausschnitt um "Nachricht von" - mit erfundenen Werten.
+      render: html
+  - type: checkboxes
+    id: ok
+    attributes:
+      label: Datenschutz
+      options:
+        - label: Ich habe alle echten Namen, Texte und Nummern ersetzt. / I removed all real data.
+          required: true

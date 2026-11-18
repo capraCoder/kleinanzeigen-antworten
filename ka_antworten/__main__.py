@@ -3,6 +3,7 @@
   ka-antworten Postfach.mbox                 # .eml / .mbox files or folders
   ka-antworten --imap                        # read-only IMAP, settings from config.toml
   ka-antworten --config mein.toml --out antworten.html export/
+  ka-antworten                               # easy mode: folder "Kleinanzeigen" on the desktop
 """
 from __future__ import annotations
 
@@ -11,11 +12,50 @@ import getpass
 import os
 import sys
 import tomllib
+import webbrowser
 from pathlib import Path
 
 from . import __version__
 from .build import render
 from .parse import messages_from_imap, messages_from_paths, parse_all
+
+
+FOLDER = "Kleinanzeigen"
+
+
+def _desktops() -> list[Path]:
+    home = Path.home()
+    cands = [home / "Desktop", home / "OneDrive" / "Desktop", home / "OneDrive" / "Schreibtisch", home / "Schreibtisch"]
+    cands += sorted(home.glob("OneDrive*/Desktop"))
+    return [c for c in cands if c.is_dir()]
+
+
+def find_folder() -> Path:
+    """Easy mode: a "Kleinanzeigen" folder next to the program or on the desktop (created if missing)."""
+    here = Path(sys.executable).parent if getattr(sys, "frozen", False) else Path.cwd()
+    places = [here] + _desktops()
+    for p in places:
+        if (p / FOLDER).is_dir():
+            return p / FOLDER
+    target = (_desktops() or [here])[0] / FOLDER
+    target.mkdir(parents=True, exist_ok=True)
+    return target
+
+
+def easy() -> int:
+    """Double-click mode: no options, build the page from the folder and open it."""
+    folder = find_folder()
+    print(f"Ordner: {folder}")
+    if not any(x.suffix.lower() in (".eml", ".mbox") for x in folder.rglob("*")):
+        print("Der Ordner ist noch leer. Lege Deine Kleinanzeigen-Mails hinein (siehe Anleitung)"
+              " und starte das Programm dann noch einmal.")
+        return 1
+    out = folder.parent / "antworten.html"
+    cfg = folder / "config.toml"
+    rc = main([str(folder), "--out", str(out)] + (["--config", str(cfg)] if cfg.exists() else ["--config", str(folder / "-")]))
+    if rc == 0:
+        webbrowser.open(out.as_uri())
+    return rc
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -53,5 +93,13 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
+def entry() -> int:
+    """Console entry: with no arguments run easy mode; keep a double-clicked window open."""
+    rc = easy() if len(sys.argv) == 1 else main()
+    if getattr(sys, "frozen", False) and len(sys.argv) == 1:
+        input("\nEnter drücken zum Schließen ...")
+    return rc
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(entry())

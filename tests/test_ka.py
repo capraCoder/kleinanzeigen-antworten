@@ -102,6 +102,29 @@ class Build(unittest.TestCase):
         data = json.loads(re.search(r'<script id="data" type="application/json">(.*?)</script>', page, re.S).group(1))
         self.assertEqual(len(data), 7)
 
+    def test_placeholder_typed_by_buyer_stays_text(self):
+        rows = parse_all([roundtrip(make_mail("p:1:1", "Paul Test", "Ich schreibe __ADS__ und __REPLIES__"))])[0]
+        page = render(rows, {})
+        data = json.loads(re.search(r'<script id="data" type="application/json">(.*?)</script>', page, re.S).group(1))
+        self.assertEqual(data[0]["text"], "Ich schreibe __ADS__ und __REPLIES__")
+
+    def test_ad_details_filtered(self):
+        from ka_antworten.build import ad_details
+        d = ad_details({"ad_details": {"1234567890": {
+            "price": 40, "text": "Gut erhalten", "url": "https://www.kleinanzeigen.de/s-anzeige/x",
+            "photos": ["fotos/sofa1.jpg", "https://img.example/a.jpg", "javascript:alert(1)", "data:image/png;base64,AA"]},
+            "1": {"price": True, "url": "javascript:alert(1)"}}})
+        self.assertEqual(d["1234567890"]["photos"], ["fotos/sofa1.jpg", "https://img.example/a.jpg"])
+        self.assertEqual(d["1234567890"]["price"], 40)
+        self.assertEqual(d["1"], {})  # negative control: bool price and javascript: url dropped
+
+    def test_page_has_preview_and_bar_order(self):
+        page = render(self.rows(), {"ad_details": {"1234567890": {"price": 40}}})
+        self.assertIn('<dialog id="ap"', page)
+        self.assertIn('DETAILS={"1234567890": {"price": 40}}', page)
+        self.assertLess(page.index('id="q"'), page.index('class="bar sort"'))  # search above the sort bar
+        self.assertNotRegex(page, r"\b(du|dein|deine|deiner)\b")  # capital Du in the UI
+
 
 class Cli(unittest.TestCase):
     def test_cli_writes_page(self):
@@ -111,6 +134,19 @@ class Cli(unittest.TestCase):
             out = Path(d, "out.html")
             self.assertEqual(main([d, "--config", str(Path(d, "none.toml")), "--out", str(out)]), 0)
             self.assertIn("Anna B.", out.read_text(encoding="utf-8"))
+
+    def test_easy_mode(self):
+        from unittest import mock
+        import ka_antworten.__main__ as cli
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(Path, "home", return_value=Path(d)),                 mock.patch.object(Path, "cwd", return_value=Path(d, "nowhere")),                 mock.patch("webbrowser.open") as opened:
+            Path(d, "Desktop").mkdir()
+            self.assertEqual(cli.easy(), 1)  # negative control: folder created, but empty
+            self.assertTrue(Path(d, "Desktop", "Kleinanzeigen").is_dir())
+            for i, m in enumerate(demo_set()):
+                Path(d, "Desktop", "Kleinanzeigen", f"{i}.eml").write_bytes(m.as_bytes())
+            self.assertEqual(cli.easy(), 0)
+            self.assertTrue(Path(d, "Desktop", "antworten.html").exists())
+            opened.assert_called_once()
 
     def test_cli_empty_fails(self):
         with tempfile.TemporaryDirectory() as d:
