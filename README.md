@@ -105,7 +105,6 @@ standardmäßig abgekürzt ("Anna B."). Die `.gitignore` schließt Seiten, `conf
 Mail-Exporte aus.
 
 Dieses Projekt ist nicht mit Kleinanzeigen verbunden. "Kleinanzeigen" ist eine Marke ihres Inhabers.
-MIT-Lizenz.
 
 ---
 
@@ -133,7 +132,27 @@ login, takes no account risk and never touches Kleinanzeigen.
 - Tests: `python -m unittest`
 
 The page holds your buyers' names and messages, so do not share it. Not affiliated with
-Kleinanzeigen. MIT licence.
+Kleinanzeigen.
+
+---
+
+## Lizenz / Licence
+
+**Deutsch.** Frei nutzen, verändern, weitergeben und forken: ja. Damit Geld verdienen: nein.
+Lizenz: [PolyForm Noncommercial 1.0.0](LICENSE). Wer es weitergibt oder darauf aufbaut, nennt bitte
+die Quelle mit genau dieser Zeile (zum Kopieren):
+
+```
+Based on kleinanzeigen-antworten by capraCoder (https://github.com/capraCoder/kleinanzeigen-antworten)
+```
+
+**English.** Use, change, share and fork it freely: yes. Make money with it: no.
+Licence: [PolyForm Noncommercial 1.0.0](LICENSE). If you share it or build on it, please credit it
+with exactly this line (copy and paste):
+
+```
+Based on kleinanzeigen-antworten by capraCoder (https://github.com/capraCoder/kleinanzeigen-antworten)
+```
 
 ---
 

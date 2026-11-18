@@ -7,7 +7,7 @@ name = "ka-antworten"
 version = "0.1.0"
 description = "Local reply desk for Kleinanzeigen sellers, built only from the notification e-mails"
 readme = "README.md"
-license = "MIT"
+license = "PolyForm-Noncommercial-1.0.0"
 requires-python = ">=3.11"
 dependencies = ["tzdata; sys_platform == 'win32'"]
 keywords = ["kleinanzeigen", "email", "imap", "mbox", "seller"]
