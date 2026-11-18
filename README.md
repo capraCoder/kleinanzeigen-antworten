@@ -134,3 +134,24 @@ login, takes no account risk and never touches Kleinanzeigen.
 
 The page holds your buyers' names and messages, so do not share it. Not affiliated with
 Kleinanzeigen. MIT licence.
+
+---
+
+## Haftungsausschluss / Disclaimer
+
+**Deutsch.** Diese Software wird kostenlos und ohne jede Gewähr bereitgestellt ("wie besehen"),
+siehe [LICENSE](LICENSE). Die Nutzung erfolgt auf eigenes Risiko. Für Schäden, Datenverlust,
+entgangene Verkäufe oder Maßnahmen Dritter (z. B. Kontosperrungen) wird keine Haftung übernommen,
+soweit gesetzlich zulässig. Du bist selbst verantwortlich für die Einhaltung der Nutzungsbedingungen
+von Kleinanzeigen und Deines E-Mail-Anbieters sowie des Datenschutzrechts (DSGVO) beim Umgang mit
+den Daten Deiner Käufer. Dieses Projekt ist kein offizielles Angebot von Kleinanzeigen und steht in
+keiner Verbindung zu Kleinanzeigen; "Kleinanzeigen" ist eine Marke ihres Inhabers. Dies ist keine
+Rechtsberatung.
+
+**English.** This software is provided free of charge and "as is", without warranty of any kind;
+see [LICENSE](LICENSE). You use it at your own risk. To the extent permitted by law, no liability is
+accepted for damage, data loss, lost sales or actions by third parties (such as account
+restrictions). You are responsible for complying with the terms of Kleinanzeigen and of your e-mail
+provider, and with data-protection law (GDPR) when handling your buyers' data. This project is not
+an official Kleinanzeigen product and is not affiliated with Kleinanzeigen; "Kleinanzeigen" is a
+trademark of its owner. This is not legal advice.
