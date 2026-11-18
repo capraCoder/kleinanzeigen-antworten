@@ -138,17 +138,15 @@ Kleinanzeigen.
 
 ## Lizenz / Licence
 
-**Deutsch.** Frei nutzen, verändern, weitergeben und forken: ja. Damit Geld verdienen: nein.
-Lizenz: [PolyForm Noncommercial 1.0.0](LICENSE). Wer es weitergibt oder darauf aufbaut, nennt bitte
-die Quelle mit genau dieser Zeile (zum Kopieren):
+**Deutsch.** Frei nutzen, verändern, weitergeben und forken. Lizenz: [MIT](LICENSE).
+Wer es weitergibt oder darauf aufbaut, nennt bitte die Quelle mit dieser Zeile (zum Kopieren):
 
 ```
 Based on kleinanzeigen-antworten by capraCoder (https://github.com/capraCoder/kleinanzeigen-antworten)
 ```
 
-**English.** Use, change, share and fork it freely: yes. Make money with it: no.
-Licence: [PolyForm Noncommercial 1.0.0](LICENSE). If you share it or build on it, please credit it
-with exactly this line (copy and paste):
+**English.** Use, change, share and fork it freely. Licence: [MIT](LICENSE).
+If you share it or build on it, please credit it with this line (copy and paste):
 
 ```
 Based on kleinanzeigen-antworten by capraCoder (https://github.com/capraCoder/kleinanzeigen-antworten)
