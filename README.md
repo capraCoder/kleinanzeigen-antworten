@@ -2,19 +2,19 @@
 
 > **Kurz erklärt**
 >
-> Du verkaufst etwas auf Kleinanzeigen, und viele Leute schreiben dir. Jede Nachricht kommt
-> auch als E-Mail bei dir an. Dieses Programm liest diese E-Mails und macht daraus eine
+> Du verkaufst etwas auf Kleinanzeigen, und viele Leute schreiben Dir. Jede Nachricht kommt
+> auch als E-Mail bei Dir an. Dieses Programm liest diese E-Mails und macht daraus eine
 > übersichtliche Seite: wer hat was gefragt, wer wartet noch auf Antwort, und wo ist Vorsicht
 > geboten (zum Beispiel "zahle per PayPal, schreib mir auf WhatsApp"). Mit einem Klick landest
-> du im richtigen Gespräch auf Kleinanzeigen und antwortest dort wie gewohnt.
+> Du im richtigen Gespräch auf Kleinanzeigen und antwortest dort wie gewohnt.
 >
 > Das Programm meldet sich nie bei Kleinanzeigen an und schickt nichts ab. Dein Konto kann
-> dadurch nicht gesperrt werden. Alles bleibt auf deinem Rechner.
+> dadurch nicht gesperrt werden. Alles bleibt auf Deinem Rechner.
 
 **Deutsch** · [English](#english)
 
 ![Die Antwort-Seite mit erfundenen Beispiel-Nachrichten](docs/screenshot-desktop.png)
-*Beispiel mit erfundenen Käufern. Gelb: Hinweise, auf die du achten solltest.*
+*Beispiel mit erfundenen Käufern. Gelb: Hinweise, auf die Du achten solltest.*
 
 ## Was es macht
 
@@ -22,14 +22,14 @@
 - Neue Nachrichten stehen oben und sind rot markiert.
 - Warnhinweise: PayPal, Versand, Telefonnummer, Links, Preisangebot, gleicher Name in mehreren Gesprächen.
 - Antwortvorlagen mit einem Klick ("Noch da?", "Kein Versand", "Schon weg").
-- **Antwort senden** kopiert deinen Text und öffnet genau dieses Gespräch auf kleinanzeigen.de.
-  Dort fügst du ihn ein und schickst ihn selbst ab.
+- **Antwort senden** kopiert Deinen Text und öffnet genau dieses Gespräch auf kleinanzeigen.de.
+  Dort fügst Du ihn ein und schickst ihn selbst ab.
 
 ## Warum es anders ist
 
-Es gibt andere Werkzeuge für Kleinanzeigen. Die meisten melden sich mit deinem Konto an oder
+Es gibt andere Werkzeuge für Kleinanzeigen. Die meisten melden sich mit Deinem Konto an oder
 steuern die Website. Dieses liest nur die Benachrichtigungs-E-Mails. Es braucht also kein Login,
-birgt kein Risiko für dein Konto und berührt Kleinanzeigen nie.
+birgt kein Risiko für Dein Konto und berührt Kleinanzeigen nie.
 
 ## So geht's (einfach)
 
@@ -93,7 +93,7 @@ python -m unittest
 
 ## Datenschutz
 
-Die Seite enthält Namen und Nachrichten deiner Käufer. Teile sie nicht. Nachnamen werden
+Die Seite enthält Namen und Nachrichten Deiner Käufer. Teile sie nicht. Nachnamen werden
 standardmäßig abgekürzt ("Anna B."). Die `.gitignore` schließt Seiten, `config.toml` und
 Mail-Exporte aus.
 
