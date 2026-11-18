@@ -1,23 +1,39 @@
 # kleinanzeigen-antworten
 
+> **Kurz erklärt**
+>
+> Du verkaufst etwas auf Kleinanzeigen, und viele Leute schreiben dir. Jede Nachricht kommt
+> auch als E-Mail bei dir an. Dieses Programm liest diese E-Mails und macht daraus eine
+> übersichtliche Seite: wer hat was gefragt, wer wartet noch auf Antwort, und wo ist Vorsicht
+> geboten (zum Beispiel "zahle per PayPal, schreib mir auf WhatsApp"). Mit einem Klick landest
+> du im richtigen Gespräch auf Kleinanzeigen und antwortest dort wie gewohnt.
+>
+> Das Programm meldet sich nie bei Kleinanzeigen an und schickt nichts ab. Dein Konto kann
+> dadurch nicht gesperrt werden. Alles bleibt auf deinem Rechner.
+
 **Deutsch** · [English](#english)
 
-Ein lokaler Antwort-Schreibtisch für Verkäufer auf Kleinanzeigen. Das Programm liest die
-Benachrichtigungs-E-Mails, die Kleinanzeigen dir bei jeder Käufer-Nachricht schickt, und baut
-daraus **eine einzige HTML-Seite**: alle Gespräche nach Anzeige sortiert, ungelesene oben,
-Warnhinweise (PayPal, Versand, Telefonnummer, Links), Antwortvorlagen, und ein Knopf pro
-Gespräch, der genau dieses Gespräch auf kleinanzeigen.de öffnet. Dort antwortest du selbst.
+![Die Antwort-Seite mit erfundenen Beispiel-Nachrichten](docs/screenshot-desktop.png)
+*Beispiel mit erfundenen Käufern. Gelb: Hinweise, auf die du achten solltest.*
 
-Es gibt andere Werkzeuge für Kleinanzeigen. Was unseres anders macht: es liest nur die
-Benachrichtigungs-E-Mails, braucht also kein Login, birgt kein Kontorisiko und berührt
-Kleinanzeigen nie.
+## Was es macht
 
-- Kein Kleinanzeigen-Login, kein Scraping, keine Automatisierung der Website.
-- Keine Abhängigkeiten: nur Python 3.11 oder neuer.
-- Alles bleibt auf deinem Rechner. Die Seite lädt nichts nach.
-- IMAP wird **nur lesend** geöffnet (`readonly`, `BODY.PEEK`): nicht einmal "gelesen" wird gesetzt.
+- Alle Gespräche auf einer Seite, nach Anzeige oder nach Käufer sortiert.
+- Neue Nachrichten stehen oben und sind rot markiert.
+- Warnhinweise: PayPal, Versand, Telefonnummer, Links, Preisangebot, gleicher Name in mehreren Gesprächen.
+- Antwortvorlagen mit einem Klick ("Noch da?", "Kein Versand", "Schon weg").
+- **Antwort senden** kopiert deinen Text und öffnet genau dieses Gespräch auf kleinanzeigen.de.
+  Dort fügst du ihn ein und schickst ihn selbst ab.
+
+## Warum es anders ist
+
+Es gibt andere Werkzeuge für Kleinanzeigen. Die meisten melden sich mit deinem Konto an oder
+steuern die Website. Dieses liest nur die Benachrichtigungs-E-Mails. Es braucht also kein Login,
+birgt kein Risiko für dein Konto und berührt Kleinanzeigen nie.
 
 ## Installation
+
+Du brauchst Python 3.11 oder neuer. Sonst nichts.
 
 ```bash
 pip install git+https://github.com/capraCoder/kleinanzeigen-antworten
@@ -25,56 +41,65 @@ pip install git+https://github.com/capraCoder/kleinanzeigen-antworten
 
 ## Benutzung
 
-Aus exportierten Mails (.eml, .mbox, oder ein Ordner davon, z. B. aus Thunderbird oder Google Takeout):
+**Aus gespeicherten Mails.** Exportiere die Kleinanzeigen-Mails als `.eml` oder `.mbox`
+(z. B. aus Thunderbird oder Google Takeout). Dann:
 
 ```bash
 ka-antworten ~/Downloads/kleinanzeigen.mbox --out antworten.html
 ```
 
-Direkt aus dem Postfach (nur lesend). Trage `[imap]` in `config.toml` ein; das Passwort kommt aus
-der Umgebungsvariable `KA_IMAP_PASSWORD` oder wird abgefragt, nie aus der Datei. Bei Gmail ein
-App-Passwort verwenden.
+Öffne `antworten.html` im Browser.
+
+**Direkt aus dem Postfach.** Kopiere `config.example.toml` nach `config.toml` und trage unter
+`[imap]` Server und Benutzer ein. Das Passwort steht nie in der Datei: es kommt aus der
+Umgebungsvariable `KA_IMAP_PASSWORD` oder wird abgefragt. Bei Gmail brauchst du ein App-Passwort.
 
 ```bash
 ka-antworten --imap --config config.toml
 ```
 
-Vorlagen, Anzeigennamen und einen optionalen Countdown stellst du in `config.toml` ein
-(Vorlage: `config.example.toml`). Ausprobieren ohne eigene Mails:
+Das Postfach wird nur lesend geöffnet. Keine Mail wird verändert, nicht einmal als "gelesen" markiert.
+
+**Erst mal ausprobieren**, ohne eigene Mails:
 
 ```bash
 python -m tests.fake && ka-antworten tests/demo.mbox --out demo.html
 ```
 
+In `config.toml` stellst du auch Vorlagen, Anzeigennamen und einen Countdown (z. B. "Abholung endet") ein.
+
 ## Datenschutz
 
-Die erzeugte HTML-Datei enthält Namen und Nachrichten deiner Käufer. Teile sie nicht; die
-`.gitignore` schließt `*.html`, `config.toml` und Mail-Exporte aus. Standardmäßig wird der
-Nachname abgekürzt ("Anna B.").
+Die Seite enthält Namen und Nachrichten deiner Käufer. Teile sie nicht. Nachnamen werden
+standardmäßig abgekürzt ("Anna B."). Die `.gitignore` schließt Seiten, `config.toml` und
+Mail-Exporte aus.
 
 Dieses Projekt ist nicht mit Kleinanzeigen verbunden. "Kleinanzeigen" ist eine Marke ihres Inhabers.
+MIT-Lizenz.
 
 ---
 
 ## English
 
-A local reply desk for sellers on Kleinanzeigen (Germany's largest classifieds site). It reads the
-notification e-mails Kleinanzeigen sends you for every buyer message and builds **one HTML page**:
-conversations grouped by ad, unread first, warning hints (PayPal, shipping, phone numbers, links),
-reply templates, and one button per conversation that opens exactly that conversation on
-kleinanzeigen.de, where you reply yourself.
+> **In short**
+>
+> You sell things on Kleinanzeigen, Germany's largest classifieds site, and many people message
+> you. Each message also arrives as an e-mail. This program reads those e-mails and turns them
+> into one tidy page: who asked what, who is still waiting, and where to be careful. One click
+> takes you to the right conversation on Kleinanzeigen, where you reply as usual.
+>
+> It never logs in to Kleinanzeigen and never sends anything. Your account cannot be banned
+> because of it. Everything stays on your computer.
 
 What makes ours different is that it only reads the notification emails, so it needs no login,
 takes no account risk and never touches Kleinanzeigen.
 
-- No Kleinanzeigen login, no scraping, no site automation.
-- No dependencies: Python 3.11 or later.
-- Everything stays on your machine; the page loads nothing from the network.
-- IMAP is opened **read-only** (`readonly`, `BODY.PEEK`): not even the "seen" flag changes.
+- Install: `pip install git+https://github.com/capraCoder/kleinanzeigen-antworten` (Python 3.11 or later, no other dependencies).
+- From saved mail: `ka-antworten <.eml/.mbox files or folders> --out antworten.html`
+- From your mailbox, read-only: `ka-antworten --imap --config config.toml`. The password comes from
+  `KA_IMAP_PASSWORD` or a prompt, never from the file.
+- Try it: `python -m tests.fake && ka-antworten tests/demo.mbox --out demo.html`
+- Tests: `python -m unittest`
 
-Install with `pip install git+https://github.com/capraCoder/kleinanzeigen-antworten`, then run
-`ka-antworten <files-or-folders> --out antworten.html` or `ka-antworten --imap --config config.toml`
-(password from `KA_IMAP_PASSWORD` or a prompt, never from the file). Tests: `python -m unittest`.
-
-The generated page contains your buyers' names and messages; do not share it. Not affiliated with
+The page holds your buyers' names and messages, so do not share it. Not affiliated with
 Kleinanzeigen. MIT licence.
