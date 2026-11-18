@@ -9,7 +9,7 @@ description = "Local reply desk for Kleinanzeigen sellers, built only from the n
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = ["tzdata; sys_platform == 'win32'"]
 keywords = ["kleinanzeigen", "email", "imap", "mbox", "seller"]
 
 [project.scripts]

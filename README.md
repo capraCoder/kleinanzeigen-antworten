@@ -31,42 +31,61 @@ Es gibt andere Werkzeuge für Kleinanzeigen. Die meisten melden sich mit deinem 
 steuern die Website. Dieses liest nur die Benachrichtigungs-E-Mails. Es braucht also kein Login,
 birgt kein Risiko für dein Konto und berührt Kleinanzeigen nie.
 
-## Installation
+## So geht's (einfach)
 
-Du brauchst Python 3.11 oder neuer. Sonst nichts.
+Einmal einrichten, etwa 10 Minuten:
 
-```bash
-pip install git+https://github.com/capraCoder/kleinanzeigen-antworten
-```
+1. **Python installieren.** Lade es von [python.org/downloads](https://www.python.org/downloads/)
+   herunter. Unter Windows beim Installieren das Häkchen **"Add python.exe to PATH"** setzen.
+2. **Programm installieren.** Öffne die Eingabeaufforderung (Windows-Taste, "cmd" tippen, Enter)
+   oder unter macOS das "Terminal". Kopiere diese Zeile hinein und drücke Enter:
 
-## Benutzung
+   ```
+   pip install git+https://github.com/capraCoder/kleinanzeigen-antworten
+   ```
 
-**Aus gespeicherten Mails.** Exportiere die Kleinanzeigen-Mails als `.eml` oder `.mbox`
-(z. B. aus Thunderbird oder Google Takeout). Dann:
+Jedes Mal, wenn du deine Nachrichten sehen willst:
 
-```bash
-ka-antworten ~/Downloads/kleinanzeigen.mbox --out antworten.html
-```
+3. **Mails in einen Ordner legen.** Lege auf dem Schreibtisch einen Ordner `Kleinanzeigen` an.
+   - *Thunderbird oder Outlook:* Kleinanzeigen-Mails markieren und mit der Maus in den Ordner ziehen.
+   - *Gmail im Browser:* Mail öffnen, oben rechts auf ⋮ und **"Nachricht herunterladen"**, dann in den Ordner legen.
+4. **Seite bauen.** In der Eingabeaufforderung:
 
-Öffne `antworten.html` im Browser.
+   ```
+   cd Desktop
+   ka-antworten Kleinanzeigen
+   ```
 
-**Direkt aus dem Postfach.** Kopiere `config.example.toml` nach `config.toml` und trage unter
-`[imap]` Server und Benutzer ein. Das Passwort steht nie in der Datei: es kommt aus der
-Umgebungsvariable `KA_IMAP_PASSWORD` oder wird abgefragt. Bei Gmail brauchst du ein App-Passwort.
+5. **Seite öffnen.** Auf dem Schreibtisch liegt jetzt `antworten.html`. Doppelklick, fertig.
+
+Nur mal schauen, wie es aussieht? Das Bild oben zeigt es mit erfundenen Käufern.
+
+## Für Fortgeschrittene
+
+<details>
+<summary>Postfach direkt lesen, Vorlagen, Demo, Tests</summary>
+
+**Direkt aus dem Postfach (IMAP, nur lesend).** `config.example.toml` nach `config.toml` kopieren,
+unter `[imap]` Server und Benutzer eintragen. Das Passwort steht nie in der Datei: es kommt aus
+`KA_IMAP_PASSWORD` oder wird abgefragt. Gmail braucht ein App-Passwort. Der Ordner wird mit
+`readonly` und `BODY.PEEK` geöffnet: keine Mail wird verändert, nicht einmal als gelesen markiert.
 
 ```bash
 ka-antworten --imap --config config.toml
 ```
 
-Das Postfach wird nur lesend geöffnet. Keine Mail wird verändert, nicht einmal als "gelesen" markiert.
+**Eingaben:** `.eml`, `.mbox` (Thunderbird, Google Takeout) oder Ordner davon; `--out` wählt die Ausgabedatei.
 
-**Erst mal ausprobieren**, ohne eigene Mails:
+**Einstellungen** in `config.toml`: Titel, volle Namen, Anzeigennamen, Antwortvorlagen, Countdown mit Phasen.
+
+**Demo und Tests** (im Quellordner):
 
 ```bash
 python -m tests.fake && ka-antworten tests/demo.mbox --out demo.html
+python -m unittest
 ```
 
-In `config.toml` stellst du auch Vorlagen, Anzeigennamen und einen Countdown (z. B. "Abholung endet") ein.
+</details>
 
 ## Datenschutz
 
@@ -94,7 +113,7 @@ MIT-Lizenz.
 What makes ours different is that it only reads the notification emails, so it needs no login,
 takes no account risk and never touches Kleinanzeigen.
 
-- Install: `pip install git+https://github.com/capraCoder/kleinanzeigen-antworten` (Python 3.11 or later, no other dependencies).
+- Install: `pip install git+https://github.com/capraCoder/kleinanzeigen-antworten` (Python 3.11 or later).
 - From saved mail: `ka-antworten <.eml/.mbox files or folders> --out antworten.html`
 - From your mailbox, read-only: `ka-antworten --imap --config config.toml`. The password comes from
   `KA_IMAP_PASSWORD` or a prompt, never from the file.

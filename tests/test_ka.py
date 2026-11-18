@@ -81,6 +81,9 @@ class Build(unittest.TestCase):
         wks = {m["wk"] for m in to_messages(rows) if m["who"] == "Privat"}
         self.assertEqual(len(wks), 2)
 
+    def test_unknown_timezone_falls_back(self):
+        self.assertEqual(len(to_messages(self.rows(), tz="Nirgendwo/Gibtsnicht")), 6)
+
     def test_hints(self):
         h = hints(to_messages(self.rows()))
         self.assertIn("Versand/Kurier gefragt", h["bbb:2:2"])

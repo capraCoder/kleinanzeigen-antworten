@@ -6,7 +6,7 @@ import json
 import re
 from datetime import datetime, timezone
 from importlib.resources import files
-from zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 TITLE_SALUTATION = {"fr", "frau", "hr", "herr"}
 GENERIC = {"privat", "nutzer", "kleinanzeigen-nutzer", "fr", "frau", "hr", "herr", ""}
@@ -36,7 +36,10 @@ PRICE = re.compile(r"(?<![\d.,])(\d{1,5})\s?(?:€|euro\b|eur\b)", re.I)
 
 
 def to_messages(rows: list[dict], tz: str = "Europe/Berlin", full_names: bool = False) -> list[dict]:
-    zone = ZoneInfo(tz)
+    try:
+        zone = ZoneInfo(tz)
+    except (ZoneInfoNotFoundError, ValueError):  # no time-zone data (bare Windows): use the computer's own clock
+        zone = datetime.now().astimezone().tzinfo
     out = []
     for r in rows:
         who = r["sender"].strip() if full_names else short_name(r["sender"])
