@@ -113,21 +113,89 @@ Dieses Projekt ist nicht mit Kleinanzeigen verbunden. "Kleinanzeigen" ist eine M
 > It never logs in to Kleinanzeigen and never sends anything. Your account cannot be banned
 > because of it. Everything stays on your computer.
 
-What makes ours different is that it only *reads* the notification emails (you drop them into a
-folder, or it fetches them read-only from your mailbox over IMAP), so it needs no Kleinanzeigen
-login, takes no account risk and never touches Kleinanzeigen.
+![The reply page with invented example messages](docs/screenshot-desktop.png)
+*Example with invented buyers. Yellow: hints you should watch out for.*
 
-- Windows: download `ka-antworten.exe` from [Releases](https://github.com/capraCoder/kleinanzeigen-antworten/releases/latest),
-  double-click it, put the mails in the `Kleinanzeigen` folder it creates on your desktop, double-click again.
-- Install: `pip install ka-antworten` (Python 3.11 or later); run `ka-antworten` with no arguments for the same easy mode.
-- From saved mail: `ka-antworten <.eml/.mbox files or folders> --out antworten.html`
-- From your mailbox, read-only: `ka-antworten --imap --config config.toml`. The password comes from
-  `KA_IMAP_PASSWORD` or a prompt, never from the file.
-- Try it: `python -m tests.fake && ka-antworten tests/demo.mbox --out demo.html`
-- Tests: `python -m unittest`
+## What it does
 
-The page holds your buyers' names and messages, so do not share it. Not affiliated with
-Kleinanzeigen.
+- All conversations on one page, sorted by ad or by buyer.
+- New messages are at the top and marked red.
+- Warning hints: PayPal, shipping, phone number, links, price offer, same name in several conversations.
+- Reply templates with one click ("Still available?", "No shipping", "Already gone").
+- **Send reply** copies your text and opens exactly this conversation on kleinanzeigen.de.
+  There you paste it and send it yourself.
+
+## Why it is different
+
+There are other tools for Kleinanzeigen. Most of them log in with your account or control the
+website. This one only *reads* the notification e-mails: either you put them into a folder
+yourself, or it fetches them automatically from your mailbox (IMAP, read-only). So it needs no
+login, carries no risk for your account and never touches Kleinanzeigen.
+
+## How it works (easy)
+
+### Part 1: Set up once
+
+*Only the first time, about 2 minutes. Windows.*
+
+1. **Download the program.** Under [Releases](https://github.com/capraCoder/kleinanzeigen-antworten/releases/latest)
+   download the file **`ka-antworten.exe`** and put it on your desktop.
+2. **Double-click it once.** The program creates the folder `Kleinanzeigen` on your desktop.
+   If Windows warns you ("Windows protected your PC"), click **"More info"** and then
+   **"Run anyway"**. The program is new and not yet signed.
+
+*macOS or Linux:* install Python 3.11+, then `pip install ka-antworten`.
+
+### Part 2: Get new messages
+
+*Every time new Kleinanzeigen mails have arrived.*
+
+1. **Put the mails into the `Kleinanzeigen` folder.**
+   - *Thunderbird or Outlook:* select the Kleinanzeigen mails and drag them into the folder with the mouse.
+   - *Gmail in the browser:* open the mail, click ⋮ at the top right and **"Download message"**, then put it into the folder.
+2. **Double-click `ka-antworten.exe`.** The page opens in your browser, done.
+   (With pip: in the folder above `Kleinanzeigen`, simply type `ka-antworten`.)
+
+Just want to see what it looks like? The picture above shows it with invented buyers.
+
+## For advanced users
+
+<details>
+<summary>Read the mailbox directly, templates, demo, tests</summary>
+
+**Directly from the mailbox (IMAP, read-only).** Copy `config.example.toml` to `config.toml`,
+enter server and user under `[imap]`. The password is never in the file: it comes from
+`KA_IMAP_PASSWORD` or is asked for. Gmail needs an app password. The folder is opened with
+`readonly` and `BODY.PEEK`: no mail is changed, not even marked as read.
+
+```bash
+ka-antworten --imap --config config.toml
+```
+
+**Inputs:** `.eml`, `.mbox` (Thunderbird, Google Takeout) or folders of them; `--out` chooses the output file.
+
+**Settings** in `config.toml`: title, full names, ad names, reply templates, countdown with phases.
+
+**Ad preview.** A click on an ad title (or the ad card in the buyer view) opens a window: all
+conversations for this ad with a jump to them and the last message. With `[ad_details."<Nr>"]`
+in `config.toml` you add price, ad text, link and photos. Photos are files next to the page or
+`https://` addresses; other links are dropped.
+
+**Demo and tests** (in the source folder):
+
+```bash
+python -m tests.fake && ka-antworten tests/demo.mbox --out demo.html
+python -m unittest
+```
+
+</details>
+
+## Privacy
+
+The page contains the names and messages of your buyers. Do not share it. Surnames are shortened
+by default ("Anna B."). The `.gitignore` excludes pages, `config.toml` and mail exports.
+
+This project is not affiliated with Kleinanzeigen. "Kleinanzeigen" is a trademark of its owner.
 
 ---
 
