@@ -28,7 +28,8 @@
 ## Warum es anders ist
 
 Es gibt andere Werkzeuge für Kleinanzeigen. Die meisten melden sich mit Deinem Konto an oder
-steuern die Website. Dieses liest nur die Benachrichtigungs-E-Mails. Es braucht also kein Login,
+steuern die Website. Dieses *liest* nur die Benachrichtigungs-E-Mails: entweder legst Du sie selbst in einen Ordner,
+oder es holt sie automatisch aus Deinem Postfach (IMAP, nur lesend). Es braucht also kein Login,
 birgt kein Risiko für Dein Konto und berührt Kleinanzeigen nie.
 
 ## So geht's (einfach)
