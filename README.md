@@ -83,6 +83,12 @@ ka-antworten --imap --config config.toml
 
 **Einstellungen** in `config.toml`: Titel, volle Namen, Anzeigennamen, Antwortvorlagen, Countdown mit Phasen.
 
+**Anzeigen-Vorschau.** Ein Klick auf einen Anzeigentitel (oder das Anzeigen-Kärtchen in der
+Käufer-Ansicht) öffnet ein Fenster: alle Gespräche zu dieser Anzeige mit Sprung dorthin und die
+letzte Nachricht. Mit `[ad_details."<Nr>"]` in `config.toml` kommen Preis, Anzeigentext, Link und
+Fotos dazu. Fotos sind Dateien neben der Seite oder `https://`-Adressen, andere Links werden
+verworfen.
+
 **Demo und Tests** (im Quellordner):
 
 ```bash
@@ -115,8 +121,9 @@ MIT-Lizenz.
 > It never logs in to Kleinanzeigen and never sends anything. Your account cannot be banned
 > because of it. Everything stays on your computer.
 
-What makes ours different is that it only reads the notification emails, so it needs no login,
-takes no account risk and never touches Kleinanzeigen.
+What makes ours different is that it only *reads* the notification emails (you drop them into a
+folder, or it fetches them read-only from your mailbox over IMAP), so it needs no Kleinanzeigen
+login, takes no account risk and never touches Kleinanzeigen.
 
 - Install: `pip install git+https://github.com/capraCoder/kleinanzeigen-antworten` (Python 3.11 or later).
 - From saved mail: `ka-antworten <.eml/.mbox files or folders> --out antworten.html`
