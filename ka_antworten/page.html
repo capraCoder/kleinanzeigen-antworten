@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__TITLE__</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d1d1b;--mute:#6b6a66;--line:#e3e1db;--acc:#2f6f4f;--warn:#b5432f;--chip:#eef3ef;--me:#e8f0fb;--tri:#fbf7ea;--triline:#e4d9b4;--ok:#2f6f4f;--send:#c2410c}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#161615;--card:#21211f;--ink:#ecebe6;--mute:#a09e97;--line:#35342f;--acc:#7fc59d;--warn:#ef8a74;--chip:#263129;--me:#1f2a38;--tri:#2a2719;--triline:#4d4527;--ok:#7fc59d;--send:#f08a4b}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px}
+h1{font-size:17px;margin:0 0 4px}.sub{color:var(--mute);font-size:13px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.tab{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 12px;border-radius:999px;cursor:pointer;font:inherit}
+.tab[aria-pressed=true]{background:var(--acc);color:#fff;border-color:var(--acc)}
+input[type=search]{flex:1;min-width:160px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
+label.f{font-size:13px;color:var(--mute);display:flex;gap:4px;align-items:center}
+main{max-width:980px;margin:0 auto;padding:12px 16px 80px}
+details.grp{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+details>summary{list-style:none;cursor:pointer}
+details>summary::-webkit-details-marker{display:none}
+details.grp>summary{padding:12px 14px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+details.grp>summary::before,details.cv>summary .ch::before{content:"▸";color:var(--mute);display:inline-block;transition:transform .15s}
+details.grp[open]>summary::before,details.cv[open]>summary .ch::before{transform:rotate(90deg)}
+.gt{font-weight:650}.cnt{color:var(--mute);font-size:13px}.open{color:var(--warn);font-size:13px;font-weight:600}
+.new{background:var(--warn);color:#fff;font-size:11px;font-weight:700;padding:1px 6px;border-radius:999px;letter-spacing:.03em}
+details.cv{border-top:1px solid var(--line)}
+details.cv>summary{padding:10px 14px 4px}
+.cb{padding:0 14px 12px}
+.ch{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.who{font-weight:600}.adl{font-size:13px;background:var(--chip);padding:1px 8px;border-radius:999px}
+.stag{font-size:12px;color:var(--mute);border:1px solid var(--line);padding:0 7px;border-radius:999px}
+.tri{border:1.5px solid var(--triline);background:var(--tri);border-radius:10px;padding:8px 11px;margin:2px 0 6px;font-size:14px}
+.tri .tv b{letter-spacing:.02em}
+.tri .rh{color:var(--warn);font-weight:750;margin-top:5px;letter-spacing:.02em}
+.tri ul{margin:2px 0 0;padding-left:20px}
+.tri .nr{color:var(--ok);font-weight:650;margin-top:4px}
+.tri .stale{color:var(--warn);font-weight:600;margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;font-size:12px;color:var(--mute)}
+.chip{background:var(--card);border:1px dashed var(--triline);padding:0 7px;border-radius:999px}
+select,textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:6px}
+select{padding:3px 6px;font-size:13px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;color:var(--mute);margin:2px 0 4px}
+.msg{margin:6px 0;padding:7px 10px;border-left:3px solid var(--acc);background:var(--bg);border-radius:0 8px 8px 0;white-space:pre-wrap;word-wrap:break-word}
+.msg.me{border-left-color:#4a78c2;background:var(--me);margin-left:24px}
+.ts{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--mute);white-space:normal}
+.x{margin-left:auto;border:0;background:none;color:var(--mute);cursor:pointer;font-size:15px;line-height:1}
+.act{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.btn{font:inherit;font-size:13px;padding:4px 10px;border-radius:6px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;text-decoration:none}
+.btn.p{background:var(--acc);color:#fff;border-color:var(--acc)}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.send{background:var(--send);border-color:var(--send);color:#fff;font-weight:700;letter-spacing:.03em;margin-left:auto}
+.draft{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.draft label{font-size:12px;color:var(--mute)}
+textarea{width:100%;min-height:58px;padding:6px 8px;margin-top:4px}
+.ta-note{display:none}
+.st-abgeholt,.st-abgesagt,.st-erledigt{opacity:.6}
+.hide{display:none!important}
+.dl{font-size:13px;margin-top:2px;color:var(--warn);font-weight:600}
+#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;max-width:min(92vw,560px);box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .2s;z-index:9}
+#toast.on{opacity:1}
+@media (max-width:560px){.btn.send{margin-left:0;width:100%}}
+</style></head><body>
+<header>
+<h1>__TITLE__</h1>
+<div class="sub">Stand __STAMP__ · __NMSG__ Nachrichten · __NCONV__ Gespräche · __NBUY__ Käufer · <span id="nopen"></span></div>
+<div class="dl" id="dl"></div>
+<div class="bar">
+<button class="tab" data-v="ad" aria-pressed="true">Nach Anzeige</button>
+<button class="tab" data-v="buyer" aria-pressed="false">Nach Käufer</button>
+<button class="btn" data-all="open" title="Alle Gruppen und Gespräche aufklappen">▾ Alle aufklappen</button>
+<button class="btn" data-all="close" title="Alle Gruppen zuklappen">▸ Alle zuklappen</button>
+<button class="btn" data-all="triage" title="Gruppen auf, Gespräche zu: nur die Hinweise">Nur Übersicht</button>
+</div>
+<div class="bar">
+<input type="search" id="q" placeholder="Suchen: Name, Nr., Text, Hinweis …">
+<label class="f"><input type="checkbox" id="only"> nur offene</label>
+<label class="f" title="Lädt alle 5 Minuten neu, nie während du tippst"><input type="checkbox" id="auto"> Auto-Neuladen</label>
+<button class="btn" id="seen" title="NEU-Markierungen zurücksetzen">✓ alles gesehen</button>
+<a class="btn" href="https://www.kleinanzeigen.de/m-nachrichten.html" target="ka" rel="noopener">Postfach ↗</a>
+</div>
+</header>
+<main id="m"></main>
+<div id="toast" role="status" aria-live="polite"></div>
+<script id="data" type="application/json">__DATA__</script>
+<script>
+const MSGS=JSON.parse(document.getElementById('data').textContent);
+const ADS=__ADS__, REPLIES=__REPLIES__, AUTO=__AUTO__, DEADLINE=__DEADLINE__;
+const STATES=["neu","beantwortet","Termin","reserviert","abgeholt","abgesagt","erledigt"];
+const INBOX='https://www.kleinanzeigen.de/m-nachrichten.html';
+function ld(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+const K='ka-antworten-v1',KO='ka-antworten-open-v1',KD='ka-antworten-drafts-v1',KS='ka-antworten-seen-v1',KA='ka-antworten-auto-v1';
+let S=ld(K,{}),O=ld(KO,{}),D=ld(KD,{}),SEEN=ld(KS,null);
+if(SEEN===null){SEEN=Date.now();sv(KS,SEEN)}
+const save=()=>sv(K,S),saveO=()=>sv(KO,O),saveD=()=>sv(KD,D);
+function st(c){return S[c]||(S[c]={status:'neu',note:'',me:[]})}
+const fmt=t=>new Date(t).toLocaleString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function adLabel(nr,fallback){return ADS[nr]||fallback||('Anzeige '+nr)}
+const convs={};
+for(const m of MSGS){m.t=Date.parse(m.ts);(convs[m.conv]||(convs[m.conv]={key:m.conv,nr:m.nr,ad:m.ad,who:m.who,wk:m.wk,msgs:[]})).msgs.push(m)}
+const lastBuyer=c=>c.msgs[c.msgs.length-1].t;
+function lastMe(c){const a=st(c.key).me;return a.length?Date.parse(a[a.length-1].ts):0}
+function isOpen(c){const s=st(c.key).status;if(s==='abgeholt'||s==='abgesagt'||s==='erledigt')return false;return lastBuyer(c)>lastMe(c)}
+const nNew=c=>c.msgs.filter(m=>m.t>SEEN).length;
+const link=c=>INBOX+'?conversationId='+encodeURIComponent(c.key);
+function timeline(c){const mine=st(c.key).me.map((x,i)=>({t:Date.parse(x.ts),text:x.text,me:true,i}));return c.msgs.concat(mine).sort((a,b)=>a.t-b.t)}
+function triBox(c){
+  const auto=AUTO[c.key]||[];
+  return auto.length?`<div class="tri"><div class="rh">Auffällig</div><div class="chips">${auto.map(a=>`<span class="chip">${esc(a)}</span>`).join('')}</div></div>`:''}
+function convHTML(c,showAd){
+  const s=st(c.key),nn=nNew(c),tri=null;
+  const opts=STATES.map(x=>`<option${x===s.status?' selected':''}>${x}</option>`).join('');
+  const tl=timeline(c).map(m=>`<div class="msg${m.me?' me':''}"><span class="ts">${m.me?'Ich (protokolliert)':esc(c.who)} · ${fmt(m.t)}${(!m.me&&m.t>SEEN)?' <span class="new">NEU</span>':''}${m.me?`<button class="x" data-del="${m.i}" title="Protokoll-Eintrag löschen" aria-label="Eintrag löschen">×</button>`:''}</span>${esc(m.text||'')}</div>`).join('');
+  const quick=REPLIES.map((r,i)=>`<button class="btn" data-q="${i}">${esc(r[0])}</button>`).join('');
+  const openAttr=(O['c:'+c.key]??isOpen(c))?' open':'';
+  const label=showAd?`<span class="adl">${esc(adLabel(c.nr,c.ad))}</span>`:`<span class="who">${esc(c.who)}</span>`;
+  const search=(c.who+' '+c.nr+' '+adLabel(c.nr,c.ad)+' '+c.msgs.map(m=>m.text).join(' ')+' '+s.note+' '+(AUTO[c.key]||[]).join(' ')).toLowerCase();
+  return `<details class="cv st-${s.status}" data-c="${esc(c.key)}" data-r="${openAttr?1:0}" data-s="${esc(search)}"${openAttr}>
+  <summary><div class="ch">${label}${isOpen(c)?'<span class="open">● offen</span>':''}${nn?`<span class="new">${nn} NEU</span>`:''}<span class="stag">${esc(s.status)}</span><span class="cnt">${c.msgs.length} Nachr. · zuletzt ${fmt(lastBuyer(c))}</span></div>${triBox(c)}</summary>
+  <div class="cb">
+  <div class="row">Status <select class="st" aria-label="Status">${opts}</select><a class="btn" href="${esc(link(c))}" target="ka" rel="noopener">Gespräch öffnen ↗</a></div>
+  ${tl}
+  <div class="draft"><label>Entwurf (bleibt gespeichert)</label>
+  <textarea class="ta-draft" placeholder="Antwort hier schreiben oder Vorschlag/Baustein wählen …">${esc(D[c.key]||'')}</textarea>
+  <div class="act">${quick}<button class="btn send" data-a="send" title="Kopiert den Entwurf, öffnet das Gespräch bei Kleinanzeigen und protokolliert ihn. Den Senden-Knopf drückst du dort selbst.">Antwort senden</button></div></div>
+  <div class="act"><button class="btn" data-a="note">Notiz</button></div>
+  <textarea class="ta-note" placeholder="Notiz">${esc(s.note)}</textarea>
+  </div></details>`}
+let view='ad';
+function groupsOf(list){const g={};for(const c of list){const k=view==='ad'?c.nr:c.wk;(g[k]||(g[k]=[])).push(c)}return g}
+function render(){
+  const q=document.getElementById('q').value.trim().toLowerCase();const only=document.getElementById('only').checked;
+  const all=Object.values(convs);
+  document.getElementById('nopen').textContent=all.filter(isOpen).length+' offen';
+  const groups=groupsOf(all.filter(c=>(!only||isOpen(c))));
+  const keys=Object.keys(groups).sort((a,b)=>Math.max(...groups[b].map(lastBuyer))-Math.max(...groups[a].map(lastBuyer)));
+  let out='';
+  for(const g of keys){
+    const cs=groups[g].sort((a,b)=>a.msgs[0].t-b.msgs[0].t);
+    const nOpen=cs.filter(isOpen).length,nMsg=cs.reduce((n,c)=>n+c.msgs.length,0),nN=cs.reduce((n,c)=>n+nNew(c),0);
+    const title=view==='ad'?adLabel(g,cs[0].ad):cs[0].who;
+    const meta=view==='ad'?`${cs.length} Käufer · ${nMsg} Nachr.`:`${cs.length} Anzeige${cs.length>1?'n':''} · ${nMsg} Nachr.`;
+    const gk=view+':'+g,op=(O['g:'+gk]??true);
+    out+=`<details class="grp" data-g="${esc(gk)}" data-r="${op?1:0}"${op?' open':''}><summary><span class="gt">${esc(title)}</span><span class="cnt">${meta}</span>${nOpen?`<span class="open">${nOpen} offen</span>`:''}${nN?`<span class="new">${nN} NEU</span>`:''}</summary>${cs.map(c=>convHTML(c,view==='buyer')).join('')}</details>`}
+  document.getElementById('m').innerHTML=out||'<p>Keine Treffer.</p>';
+  if(q)filter(q)}
+function filter(q){document.querySelectorAll('details.cv').forEach(e=>e.classList.toggle('hide',!e.dataset.s.includes(q)));
+  document.querySelectorAll('details.grp').forEach(d=>d.classList.toggle('hide',!d.querySelector('details.cv:not(.hide)')))}
+let tt;function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('on'),6000)}
+async function copy(t,ta){try{await navigator.clipboard.writeText(t);return true}catch(_){try{ta.focus();ta.select();return document.execCommand('copy')}catch(__){return false}}}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{view=b.dataset.v;document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
+document.querySelectorAll('[data-all]').forEach(b=>b.onclick=()=>{const a=b.dataset.all;
+  for(const c of Object.values(convs)){if(a==='open')O['c:'+c.key]=true;if(a==='triage')O['c:'+c.key]=false}
+  for(const c of Object.values(convs)){O['g:ad:'+c.nr]=(a!=='close');O['g:buyer:'+c.wk]=(a!=='close')}
+  saveO();render()});
+document.getElementById('q').oninput=render;
+document.getElementById('only').onchange=render;
+document.getElementById('seen').onclick=()=>{SEEN=Date.now();sv(KS,SEEN);render();toast('NEU-Markierungen zurückgesetzt.')};
+const m=document.getElementById('m');
+m.addEventListener('toggle',e=>{const d=e.target;let k;if(d.classList.contains('grp'))k='g:'+d.dataset.g;else if(d.classList.contains('cv'))k='c:'+d.dataset.c;else return;
+  if(O[k]===undefined&&d.open===(d.dataset.r==='1'))return;O[k]=d.open;saveO()},true);
+m.addEventListener('change',e=>{const cv=e.target.closest('details.cv');if(!cv)return;if(e.target.classList.contains('st')){st(cv.dataset.c).status=e.target.value;save();render()}});
+let lastType=0;
+m.addEventListener('input',e=>{const cv=e.target.closest('details.cv');if(!cv)return;lastType=Date.now();if(e.target.classList.contains('ta-draft')){D[cv.dataset.c]=e.target.value;saveD()}});
+m.addEventListener('click',async e=>{
+  const b=e.target.closest('button');if(!b)return;const cv=b.closest('details.cv');if(!cv)return;const key=cv.dataset.c,c=convs[key];
+  const ta=cv.querySelector('.ta-draft');
+  if(b.dataset.q!==undefined){ta.value=REPLIES[+b.dataset.q][1];D[key]=ta.value;saveD();ta.focus();return}
+  if(b.dataset.del!==undefined){st(key).me.splice(+b.dataset.del,1);save();render();toast('Protokoll-Eintrag gelöscht.');return}
+  if(b.dataset.a==='send'){const t=ta.value.trim();if(!t){ta.focus();toast('Der Entwurf ist leer: erst Text schreiben oder einen Baustein wählen.');return}
+    const ok=await copy(t,ta);window.open(link(c),'ka');
+    const s=st(key);s.me.push({ts:new Date().toISOString(),text:t});if(s.status==='neu')s.status='beantwortet';delete D[key];save();saveD();render();
+    toast((ok?'Kopiert. ':'Kopieren fehlgeschlagen: Text bitte selbst markieren. ')+'Gespräch mit '+c.who+' geöffnet'+', dort einfügen (Strg+V) und Senden klicken.');return}
+  if(b.dataset.a==='note'){const tn=cv.querySelector('.ta-note');if(tn.style.display==='block'){st(key).note=tn.value;save();render()}else{tn.style.display='block';tn.focus();b.textContent='✓ Notiz speichern'}}
+});
+function deadline(){const el=document.getElementById('dl');if(!DEADLINE||!DEADLINE.end){el.textContent='';return}
+  const n=Date.now(),end=Date.parse(DEADLINE.end);let ph='';
+  for(const p of (DEADLINE.phases||[]))if(n>=Date.parse(p.from))ph=p.label;
+  const h=(end-n)/36e5;
+  el.textContent=h>0?`${DEADLINE.label||'Frist'} ${fmt(end)} · noch ${Math.floor(h)} h ${Math.floor((h%1)*60)} min${ph?' · Jetzt: '+ph:''}`:(DEADLINE.label||'Frist')+' vorbei.'}
+const auto=document.getElementById('auto');auto.checked=ld(KA,true);auto.onchange=()=>sv(KA,auto.checked);
+setInterval(()=>{if(!auto.checked)return;const a=document.activeElement;if(a&&a.tagName==='TEXTAREA')return;if(Date.now()-lastType<60000)return;
+  try{sessionStorage.setItem('ka-scroll',String(scrollY));sessionStorage.setItem('ka-view',view)}catch(_){}location.reload()},5*60000);
+try{const v=sessionStorage.getItem('ka-view');if(v){view=v;document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===v))}}catch(_){}
+deadline();setInterval(deadline,60000);render();
+try{const y=sessionStorage.getItem('ka-scroll');if(y){scrollTo(0,+y);sessionStorage.removeItem('ka-scroll')}}catch(_){}
+</script></body></html>

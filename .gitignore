@@ -1,0 +1,10 @@
+# Your own settings and output contain buyer names and messages: never commit them.
+config.toml
+*.html
+!ka_antworten/page.html
+*.eml
+*.mbox
+__pycache__/
+*.egg-info/
+build/
+dist/
